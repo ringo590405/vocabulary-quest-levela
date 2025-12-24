@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Vocabulary Quest｜Level A（20 Words）</title>
+  <title>Vocabulary Quest｜Level A2（20 Words）</title>
   <style>
     :root{
       --bg:#f4f8ff;
@@ -178,7 +178,7 @@
 </head>
 <body>
   <div class="wrap">
-    <h1>Vocabulary Quest｜Level A（20 Words）</h1>
+    <h1>Vocabulary Quest｜Level A2（20 Words）</h1>
     <p class="sub">規則：每題三選一。答題前不洩漏答案；答錯才會顯示正確答案＋中文解析。錯題本重練：必須全對才算通關（答錯會丟到隊尾）。</p>
 
     <div class="controls">
@@ -203,31 +203,31 @@
     </div>
   </div>
 
-  
+  <script>
   document.addEventListener("DOMContentLoaded", function () {
-    // ====== DATA ======
+    // ====== DATA: Level A2 (20 words) ======
     var words = [
-      { word: "ability", def: "the power or skill to do something", zhExplain: "ability＝能力。常用：have the ability to + V（有能力做…）。", confusable: "skill" },
-      { word: "able", def: "having the skill to do something", zhExplain: "be able to + V＝能夠做…。capable 也像但較正式。", confusable: "capable" },
-      { word: "about", def: "related to; concerning", zhExplain: "about＝關於。例：talk about / learn about。", confusable: "concerning" },
-      { word: "above", def: "at a higher position", zhExplain: "above＝在…上方（位置）。over 有時也可，但常含覆蓋感。", confusable: "over" },
-      { word: "across", def: "from one side to the other", zhExplain: "across＝到對面；through＝穿過內部。", confusable: "through" },
-      { word: "act", def: "to do something; behave", zhExplain: "act＝行動/表現。例：act politely（表現得有禮）。", confusable: "behave" },
-      { word: "action", def: "something that is done", zhExplain: "action＝做出來的行動；behavior＝行為表現（較抽象）。", confusable: "behavior" },
-      { word: "add", def: "to put something more", zhExplain: "add＝加上。反義：remove / reduce。", confusable: "increase" },
-      { word: "afraid", def: "feeling fear", zhExplain: "be afraid of + N/Ving＝害怕…；be afraid to + V＝不敢…。", confusable: "scared" },
-      { word: "after", def: "later than something", zhExplain: "after＝在…之後；before＝在…之前。", confusable: "before" },
+      { word: "accept", def: "to say yes to; to receive willingly", zhExplain: "accept＝接受（同意、收下）。易混：except＝除了…（介系詞/連接詞）。", confusable: "except" },
+      { word: "accident", def: "an unexpected event that causes harm or damage", zhExplain: "accident＝意外/事故。常用：traffic accident（車禍）。", confusable: "incident" },
+      { word: "achieve", def: "to succeed in doing something after trying", zhExplain: "achieve＝達成（目標）。常搭配：achieve a goal / success。", confusable: "complete" },
+      { word: "actually", def: "in fact; really", zhExplain: "actually＝其實/事實上（用來修正誤會）。例：Actually, I don’t know.", confusable: "really" },
+      { word: "adult", def: "a fully grown person", zhExplain: "adult＝成人。相對：child。也可作形容詞：adult life。", confusable: "grown-up" },
+      { word: "advice", def: "a suggestion about what you should do", zhExplain: "advice＝建議（名詞不可數）。動詞：advise sb to V。", confusable: "suggestion" },
+      { word: "advise", def: "to tell someone what you think they should do", zhExplain: "advise＝建議（動詞）。用法：advise sb to + V。", confusable: "suggest" },
+      { word: "afford", def: "to have enough money or time for something", zhExplain: "afford＝負擔得起（金錢/時間）。例：I can’t afford it.", confusable: "pay" },
+      { word: "against", def: "opposed to; not in favor of", zhExplain: "against＝反對/對抗。例：be against the plan（反對計畫）。", confusable: "for" },
+      { word: "ahead", def: "in front; before; earlier", zhExplain: "ahead＝在前面/提前。例：plan ahead（提前規劃）。", confusable: "beforehand" },
 
-      { word: "agree", def: "to have the same opinion", zhExplain: "agree＝同意（看法一致）。agree with + 人/意見。", confusable: "accept" },
-      { word: "allow", def: "to let someone do something", zhExplain: "allow＝允許（較正式）。allow sb to + V。", confusable: "let" },
-      { word: "almost", def: "nearly; not completely", zhExplain: "almost＝幾乎/差一點。例：almost finished。", confusable: "nearly" },
-      { word: "already", def: "before now", zhExplain: "already＝已經（肯定句常用）。yet＝還沒（疑問/否定常用）。", confusable: "yet" },
-      { word: "always", def: "at all times", zhExplain: "always＝總是（100%）；usually＝通常（多數情況）。", confusable: "usually" },
-      { word: "angry", def: "feeling mad", zhExplain: "angry＝生氣。angry at/with sb（對某人生氣）。", confusable: "mad" },
-      { word: "answer", def: "a reply to a question", zhExplain: "answer＝回答問題；reply＝回覆訊息/人。", confusable: "reply" },
-      { word: "appear", def: "to show up", zhExplain: "appear＝出現。例：A message appeared on the screen。", confusable: "show up" },
-      { word: "area", def: "a place or region", zhExplain: "area＝區域/範圍；region＝地區（更大更正式）。", confusable: "region" },
-      { word: "arrive", def: "to get to a place", zhExplain: "arrive at/in＝到達；reach＋地點（直接受詞）。", confusable: "reach" }
+      { word: "alive", def: "living; not dead", zhExplain: "alive＝活著的（表狀態）。living＝活的（可修飾名詞）。", confusable: "living" },
+      { word: "alone", def: "without anyone else", zhExplain: "alone＝獨自一人（客觀狀態）。lonely＝孤單（情緒）。", confusable: "lonely" },
+      { word: "among", def: "in the middle of; surrounded by", zhExplain: "among＝在…之中（3者以上）。between＝兩者之間。", confusable: "between" },
+      { word: "amount", def: "the quantity of something", zhExplain: "amount＝數量（不可數名詞用）。number＝數量（可數名詞用）。", confusable: "number" },
+      { word: "announce", def: "to make something known publicly", zhExplain: "announce＝宣布/公告。例：announce the winner。", confusable: "declare" },
+      { word: "anyway", def: "in spite of that; used to change topic", zhExplain: "anyway＝反正/總之（轉話題常用）。例：Anyway, let’s start.", confusable: "however" },
+      { word: "apply", def: "to make a request; to use", zhExplain: "apply＝申請/應用。apply for（申請）、apply to（適用於）。", confusable: "use" },
+      { word: "appoint", def: "to choose someone for a job or position", zhExplain: "appoint＝指派/任命。例：appoint a new manager。", confusable: "assign" },
+      { word: "appreciate", def: "to be thankful for; to value", zhExplain: "appreciate＝感謝/欣賞重視。常用：I appreciate your help.", confusable: "thank" },
+      { word: "argue", def: "to speak angrily because of disagreement", zhExplain: "argue＝爭吵/爭論。常用：argue with sb（和某人吵）。", confusable: "debate" }
     ];
 
     var STAGE_SIZE = 10;
@@ -526,6 +526,6 @@
       return arr;
     }
   });
-
+  </script>
 </body>
 </html>
