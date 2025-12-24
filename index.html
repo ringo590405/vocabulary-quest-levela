@@ -1,0 +1,531 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Vocabulary Quest｜Level A（20 Words）</title>
+  <style>
+    :root{
+      --bg:#f4f8ff;
+      --card:#ffffff;
+      --text:#0f172a;
+      --muted:#475569;
+      --primary:#2563eb;
+      --primary2:#1d4ed8;
+      --good:#16a34a;
+      --bad:#dc2626;
+      --border:#dbeafe;
+      --shadow:0 10px 30px rgba(15,23,42,.10);
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", Arial, sans-serif;
+      background: radial-gradient(1200px 600px at 20% 0%, #e0f2fe 0%, var(--bg) 55%, #eef2ff 100%);
+      color:var(--text);
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:18px;
+    }
+    .wrap{
+      width:min(820px, 100%);
+      background:var(--card);
+      border:1px solid var(--border);
+      border-radius:18px;
+      box-shadow:var(--shadow);
+      padding:20px;
+    }
+    h1{
+      margin:4px 0 14px;
+      font-size:clamp(20px, 3vw, 28px);
+      letter-spacing:.2px;
+    }
+    .sub{
+      margin:0 0 14px;
+      color:var(--muted);
+      line-height:1.5;
+      font-size:14px;
+    }
+    .controls{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
+      margin:10px 0 14px;
+    }
+    button{
+      border:none;
+      border-radius:14px;
+      padding:14px 18px;
+      font-size:18px;
+      font-weight:750;
+      cursor:pointer;
+      transition:.15s transform, .15s box-shadow, .15s background;
+      box-shadow:0 10px 18px rgba(37,99,235,.18);
+    }
+    button:active{ transform: translateY(1px); }
+    #startBtn{
+      background:linear-gradient(180deg, var(--primary) 0%, var(--primary2) 100%);
+      color:#fff;
+      box-shadow:0 12px 22px rgba(37,99,235,.30);
+    }
+    #nextBtn{
+      background:#0ea5e9;
+      color:#fff;
+      box-shadow:0 12px 22px rgba(14,165,233,.28);
+    }
+    #game{
+      margin-top:6px;
+      padding:14px;
+      border-radius:16px;
+      background: linear-gradient(180deg, #f8fbff 0%, #ffffff 70%);
+      border:1px solid #e0f2fe;
+    }
+    #word{
+      margin:4px 0 8px;
+      font-size:34px;
+      letter-spacing:.5px;
+    }
+    #definition{
+      margin:0 0 12px;
+      color:var(--muted);
+      font-size:16px;
+      line-height:1.5;
+      background:#f1f5ff;
+      border:1px dashed #c7d2fe;
+      border-radius:12px;
+      padding:10px 12px;
+    }
+    #choices{
+      display:grid;
+      grid-template-columns:1fr;
+      gap:12px;
+      margin:10px 0 12px;
+    }
+    .choice{
+      width:100%;
+      text-align:left;
+      background:#ffffff;
+      color:var(--text);
+      border:2px solid #dbeafe;
+      box-shadow:0 10px 18px rgba(15,23,42,.06);
+    }
+    .choice:hover{ border-color:#93c5fd; }
+    .choice.correct{
+      border-color:#86efac;
+      box-shadow:0 12px 24px rgba(22,163,74,.18);
+    }
+    .choice.wrong{
+      border-color:#fecaca;
+      box-shadow:0 12px 24px rgba(220,38,38,.14);
+    }
+    .choice:disabled{
+      opacity:.92;
+      cursor:not-allowed;
+    }
+    #feedback{
+      margin:12px 0 12px;
+      font-size:16px;
+      line-height:1.6;
+      padding:12px 12px;
+      border-radius:12px;
+      border:1px solid #e2e8f0;
+      background:#ffffff;
+      min-height:54px;
+    }
+    .bottom{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      flex-wrap:wrap;
+      justify-content:space-between;
+      margin-top:10px;
+    }
+    .progressWrap{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      color:var(--muted);
+      font-weight:650;
+    }
+    progress{
+      width:min(360px, 70vw);
+      height:18px;
+      border-radius:999px;
+      overflow:hidden;
+    }
+    progress::-webkit-progress-bar{
+      background:#e2e8f0;
+      border-radius:999px;
+    }
+    progress::-webkit-progress-value{
+      background:linear-gradient(90deg, #facc15, #fb7185);
+      border-radius:999px;
+    }
+    .hint{
+      color:var(--muted);
+      font-size:13px;
+      margin-top:10px;
+      line-height:1.5;
+    }
+    @media (min-width:720px){
+      #choices{ grid-template-columns:1fr 1fr; }
+      .choice{ min-height:64px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Vocabulary Quest｜Level A（20 Words）</h1>
+    <p class="sub">規則：每題三選一。答題前不洩漏答案；答錯才會顯示正確答案＋中文解析。錯題本重練：必須全對才算通關（答錯會丟到隊尾）。</p>
+
+    <div class="controls">
+      <button id="startBtn">開始闖關</button>
+    </div>
+
+    <div id="game" style="display:none;">
+      <h2 id="word"></h2>
+      <p id="definition"></p>
+      <div id="choices"></div>
+      <p id="feedback"></p>
+
+      <div class="bottom">
+        <button id="nextBtn" style="display:none;">下一題</button>
+        <div class="progressWrap">
+          進度：
+          <progress id="progress" value="0" max="20"></progress>
+        </div>
+      </div>
+
+      <div class="hint">小技巧：先排除「明顯不合理」的選項，再回頭比對語意最精準的一個。</div>
+    </div>
+  </div>
+
+  <script>
+  document.addEventListener("DOMContentLoaded", function () {
+    // ====== DATA ======
+    var words = [
+      { word: "ability", def: "the power or skill to do something", zhExplain: "ability＝能力。常用：have the ability to + V（有能力做…）。", confusable: "skill" },
+      { word: "able", def: "having the skill to do something", zhExplain: "be able to + V＝能夠做…。capable 也像但較正式。", confusable: "capable" },
+      { word: "about", def: "related to; concerning", zhExplain: "about＝關於。例：talk about / learn about。", confusable: "concerning" },
+      { word: "above", def: "at a higher position", zhExplain: "above＝在…上方（位置）。over 有時也可，但常含覆蓋感。", confusable: "over" },
+      { word: "across", def: "from one side to the other", zhExplain: "across＝到對面；through＝穿過內部。", confusable: "through" },
+      { word: "act", def: "to do something; behave", zhExplain: "act＝行動/表現。例：act politely（表現得有禮）。", confusable: "behave" },
+      { word: "action", def: "something that is done", zhExplain: "action＝做出來的行動；behavior＝行為表現（較抽象）。", confusable: "behavior" },
+      { word: "add", def: "to put something more", zhExplain: "add＝加上。反義：remove / reduce。", confusable: "increase" },
+      { word: "afraid", def: "feeling fear", zhExplain: "be afraid of + N/Ving＝害怕…；be afraid to + V＝不敢…。", confusable: "scared" },
+      { word: "after", def: "later than something", zhExplain: "after＝在…之後；before＝在…之前。", confusable: "before" },
+
+      { word: "agree", def: "to have the same opinion", zhExplain: "agree＝同意（看法一致）。agree with + 人/意見。", confusable: "accept" },
+      { word: "allow", def: "to let someone do something", zhExplain: "allow＝允許（較正式）。allow sb to + V。", confusable: "let" },
+      { word: "almost", def: "nearly; not completely", zhExplain: "almost＝幾乎/差一點。例：almost finished。", confusable: "nearly" },
+      { word: "already", def: "before now", zhExplain: "already＝已經（肯定句常用）。yet＝還沒（疑問/否定常用）。", confusable: "yet" },
+      { word: "always", def: "at all times", zhExplain: "always＝總是（100%）；usually＝通常（多數情況）。", confusable: "usually" },
+      { word: "angry", def: "feeling mad", zhExplain: "angry＝生氣。angry at/with sb（對某人生氣）。", confusable: "mad" },
+      { word: "answer", def: "a reply to a question", zhExplain: "answer＝回答問題；reply＝回覆訊息/人。", confusable: "reply" },
+      { word: "appear", def: "to show up", zhExplain: "appear＝出現。例：A message appeared on the screen。", confusable: "show up" },
+      { word: "area", def: "a place or region", zhExplain: "area＝區域/範圍；region＝地區（更大更正式）。", confusable: "region" },
+      { word: "arrive", def: "to get to a place", zhExplain: "arrive at/in＝到達；reach＋地點（直接受詞）。", confusable: "reach" }
+    ];
+
+    var STAGE_SIZE = 10;
+    var REVIEW_LIMIT = 5;
+
+    // ====== GET ELEMENTS ======
+    var startBtn = document.getElementById("startBtn");
+    var game = document.getElementById("game");
+    var wordEl = document.getElementById("word");
+    var defEl = document.getElementById("definition");
+    var choicesEl = document.getElementById("choices");
+    var feedback = document.getElementById("feedback");
+    var nextBtn = document.getElementById("nextBtn");
+    var progressBar = document.getElementById("progress");
+
+    // ====== CHECK REQUIRED ======
+    var missing = [];
+    if (!startBtn) missing.push("startBtn");
+    if (!game) missing.push("game");
+    if (!wordEl) missing.push("word");
+    if (!defEl) missing.push("definition");
+    if (!choicesEl) missing.push("choices");
+    if (!feedback) missing.push("feedback");
+    if (!nextBtn) missing.push("nextBtn");
+
+    if (missing.length > 0) {
+      document.body.innerHTML =
+        '<div style="padding:16px;font-family:system-ui;">' +
+        '<h2 style="color:#b00020;">找不到必要的 HTML id</h2>' +
+        "<p>請確認 HTML 裡有這些 id：<b>" + missing.join(", ") + "</b></p>" +
+        "</div>";
+      return;
+    }
+
+    // ====== STATE ======
+    var stage = 1;
+    var index = 0;
+    var locked = false;
+
+    // main 錯題紀錄（用來挑 review 題）
+    var wrongSet = {};
+
+    // 模式：main / review
+    var mode = "main";
+
+    // review 題目隊列（放 words 的 index）
+    var reviewQueue = [];
+    var reviewPos = 0;
+
+    // 用來判斷「是否已經一輪都答對」
+    var reviewAddedThisRound = false;
+
+    // ====== STAGE TITLE ======
+    var stageTitle = document.createElement("div");
+    stageTitle.style.margin = "10px 0";
+    stageTitle.style.fontWeight = "800";
+    stageTitle.style.color = "#2f6fed";
+    wordEl.parentNode.insertBefore(stageTitle, wordEl);
+
+    // ====== START ======
+    startBtn.onclick = function () {
+      startBtn.style.display = "none";
+      game.style.display = "block";
+
+      // reset
+      stage = 1;
+      index = 0;
+      locked = false;
+      wrongSet = {};
+      mode = "main";
+      reviewQueue = [];
+      reviewPos = 0;
+      reviewAddedThisRound = false;
+
+      render();
+    };
+
+    // ====== RENDER ======
+    function render() {
+      locked = false;
+      feedback.innerHTML = "";
+      nextBtn.style.display = "none";
+      choicesEl.innerHTML = "";
+
+      if (mode === "review") {
+        // progress for review
+        if (progressBar) {
+          progressBar.max = reviewQueue.length;
+          progressBar.value = reviewPos;
+        }
+
+        // ✅ 完成條件：走到隊尾，且這一輪沒有新增「被丟到隊尾」的題
+        if (reviewPos >= reviewQueue.length) {
+          if (reviewAddedThisRound) {
+            reviewPos = 0;
+            reviewAddedThisRound = false;
+          } else {
+            stageTitle.textContent = "";
+            wordEl.textContent = "🏁 錯題本通關！";
+            defEl.textContent = "太棒了！你已把錯題本全部答對，正式通關。";
+            return;
+          }
+        }
+
+        var wIndex = reviewQueue[reviewPos];
+        var currentR = words[wIndex];
+
+        stageTitle.textContent = "錯題本重練（必須全對） " + (reviewPos + 1) + "/" + reviewQueue.length;
+        wordEl.textContent = currentR.word;
+
+        defEl.textContent = "提示：先排除明顯不合理的選項。";
+
+        var optionsR = buildOptions(currentR.def);
+        for (var i = 0; i < optionsR.length; i++) {
+          (function (opt) {
+            var btn = document.createElement("button");
+            btn.textContent = opt;
+            btn.className = "choice";
+            btn.onclick = function () {
+              checkAnswer(opt, currentR.def, btn, wIndex);
+            };
+            choicesEl.appendChild(btn);
+          })(optionsR[i]);
+        }
+
+        nextBtn.textContent = "下一題";
+        return;
+      }
+
+      // ====== MAIN MODE ======
+      if (progressBar) {
+        progressBar.max = words.length;
+        progressBar.value = index;
+      }
+
+      var start = (stage - 1) * STAGE_SIZE;
+      var end = start + STAGE_SIZE;
+
+      // 全部做完 → 進錯題本
+      if (index >= words.length) {
+        prepareReview();
+        return;
+      }
+
+      // 每關完成畫面
+      if (index >= end) {
+        stageTitle.textContent = "第 " + stage + " 關（完成）";
+        wordEl.textContent = "✅ 第 " + stage + " 關完成！";
+        defEl.textContent = "按「下一題」進入下一關。";
+        nextBtn.textContent = "下一關";
+        nextBtn.style.display = "inline-block";
+        return;
+      }
+
+      // 正常題
+      var withinStage = (index - start) + 1;
+      stageTitle.textContent = "第 " + stage + " 關（" + withinStage + "/10）";
+
+      var current = words[index];
+      wordEl.textContent = current.word;
+      defEl.textContent = "提示：先排除明顯不合理的選項。";
+
+      var options = buildOptions(current.def);
+      for (var j = 0; j < options.length; j++) {
+        (function (opt2) {
+          var btn2 = document.createElement("button");
+          btn2.textContent = opt2;
+          btn2.className = "choice";
+          btn2.onclick = function () {
+            checkAnswer(opt2, current.def, btn2, index);
+          };
+          choicesEl.appendChild(btn2);
+        })(options[j]);
+      }
+
+      nextBtn.textContent = "下一題";
+    }
+
+    // ====== PREPARE REVIEW ======
+    function prepareReview() {
+      var wrongList = [];
+      for (var key in wrongSet) {
+        if (wrongSet.hasOwnProperty(key)) wrongList.push(parseInt(key, 10));
+      }
+
+      if (wrongList.length === 0) {
+        stageTitle.textContent = "";
+        wordEl.textContent = "🎉 全部完成！";
+        defEl.textContent = "太棒了！你 20 題全對，沒有錯題需要重練。";
+        return;
+      }
+
+      reviewQueue = shuffle(wrongList.slice()).slice(0, REVIEW_LIMIT);
+      reviewPos = 0;
+      reviewAddedThisRound = false;
+      mode = "review";
+
+      stageTitle.textContent = "錯題本準備中…";
+      wordEl.textContent = "📌 進入錯題本重練（必須全對）";
+      defEl.textContent = "規則：答錯的題目會被丟到隊尾，直到你把整個錯題隊伍全部答對才算通關。按「下一題」開始。";
+      nextBtn.textContent = "開始重練";
+      nextBtn.style.display = "inline-block";
+    }
+
+    // ====== OPTIONS ======
+    function buildOptions(correctDef) {
+      var distractorPool = [
+        "a kind of food",
+        "a place to sleep",
+        "a person who teaches students",
+        "a time after dinner",
+        "something you wear on your head",
+        "a tool used to cut paper"
+      ];
+
+      var distractors = shuffle(distractorPool.slice());
+      var pick = [];
+      for (var i = 0; i < distractors.length && pick.length < 2; i++) {
+        if (distractors[i] !== correctDef) pick.push(distractors[i]);
+      }
+
+      var all = [correctDef, pick[0], pick[1]];
+      return shuffle(all);
+    }
+
+    // ====== CHECK ANSWER ======
+    function checkAnswer(selected, correct, btn, wIndex) {
+      if (locked) return;
+      locked = true;
+
+      var current = words[wIndex];
+
+      var btns = choicesEl.querySelectorAll("button");
+      for (var i = 0; i < btns.length; i++) {
+        btns[i].disabled = true;
+      }
+
+      if (selected === correct) {
+        btn.classList.add("correct");
+        feedback.innerHTML = "✅ <b>答對了！</b><br>做得好！下一題繼續。";
+      } else {
+        btn.classList.add("wrong");
+
+        // main：記錄錯題
+        if (mode === "main") {
+          if (!wrongSet[wIndex]) wrongSet[wIndex] = true;
+        }
+
+        // review：答錯丟到隊尾（關鍵）
+        if (mode === "review") {
+          reviewQueue.push(wIndex);
+          reviewAddedThisRound = true;
+        }
+
+        feedback.innerHTML =
+          "❌ <b>答錯沒關係！</b><br>" +
+          "✅ 正確答案（英文解釋）：<b>" + correct + "</b><br>" +
+          "中文解析：" + current.zhExplain + "<br>" +
+          "易混字提醒：<b>" + current.confusable + "</b><br>" +
+          (mode === "review" ? "<br>📌 這題已丟到隊尾，稍後會再出現一次。" : "");
+      }
+
+      nextBtn.style.display = "inline-block";
+      nextBtn.textContent = "下一題";
+    }
+
+    // ====== NEXT ======
+    nextBtn.onclick = function () {
+      if (mode === "review") {
+        reviewPos = reviewPos + 1;
+        render();
+        return;
+      }
+
+      var start = (stage - 1) * STAGE_SIZE;
+      var end = start + STAGE_SIZE;
+
+      if (index >= end) {
+        stage = stage + 1;
+        render();
+        return;
+      }
+
+      index = index + 1;
+      render();
+    };
+
+    // ====== SHUFFLE ======
+    function shuffle(arr) {
+      for (var i = arr.length - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * (i + 1));
+        var tmp = arr[i];
+        arr[i] = arr[j];
+        arr[j] = tmp;
+      }
+      return arr;
+    }
+  });
+  </script>
+</body>
+</html>
